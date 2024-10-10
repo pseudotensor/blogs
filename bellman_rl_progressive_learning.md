@@ -41,13 +41,11 @@ The objective of the agent is to maximize the **expected cumulative reward** (or
 
 ### 2. **The Value Function**
 
-The value of being in a state \( s \) under a policy \( \pi \), denoted \( V^\pi(s) \), is the **expected total discounted reward** starting from \( s \) and following policy \( \pi \). Formally,
-
-\[
+The value of being in a state \( s \) under a policy \( \pi \), denoted $`V^\pi(s)`$, is the **expected total discounted reward** starting from \( s \) and following policy \( \pi \). Formally,
+```math
 V^\pi(s) = \mathbb{E}_\pi \left[ \sum_{t=0}^{\infty} \gamma^t r_t \mid s_0 = s \right]
-\]
-
-Here, \( r_t \) is the reward at time \( t \), and the policy \( \pi \) dictates the action \( a_t = \pi(s_t) \).
+```
+Here, \( r_t \) is the reward at time \( t \), and the policy \( \pi \) dictates the action $`a_t = \pi(s_t)`$.
 
 ### 3. **The Principle of Optimality (Bellman's Insight)**
 
@@ -55,61 +53,47 @@ Here, \( r_t \) is the reward at time \( t \), and the policy \( \pi \) dictates
 
 > An optimal policy has the property that, whatever the initial state and initial decision, the remaining decisions must constitute an optimal policy for the subproblem starting at the state resulting from the first decision.
 
-This leads to the recursive structure of the problem: if you are in state \( s \), the value of following an optimal policy \( \pi^* \) (denoted \( V^*(s) \)) is equal to the immediate reward plus the value of the next state, given that you act optimally from that point onward.
+This leads to the recursive structure of the problem: if you are in state \( s \), the value of following an optimal policy `$\pi^*$` (denoted $V^*(s)`$) is equal to the immediate reward plus the value of the next state, given that you act optimally from that point onward.
 
 ### 4. **Recursive Decomposition of the Value Function**
 
-From the **principle of optimality**, the value function for an optimal policy \( \pi^* \) can be written as:
-
-\[
+From the **principle of optimality**, the value function for an optimal policy $`\pi^*`$ can be written as:
+```math
 V^*(s) = \max_{a} \mathbb{E} \left[ R(s, a) + \gamma V^*(s') \mid s, a \right]
-\]
-
+```
 This equation breaks down as follows:
-- \( \max_a \) — The agent selects the action \( a \) that maximizes the expected return.
-- \( R(s, a) \) — The immediate reward for taking action \( a \) in state \( s \).
-- \( \gamma V^*(s') \) — The discounted future value of the next state \( s' \), assuming the agent continues optimally.
+- $`\max_a`$ — The agent selects the action \( a \) that maximizes the expected return.
+- $`R(s, a)`$ — The immediate reward for taking action \( a \) in state \( s \).
+- $`\gamma V^*(s')`$ — The discounted future value of the next state \( s' \), assuming the agent continues optimally.
 
 Since the next state \( s' \) depends on the transition probabilities \( P(s'|s, a) \), the expectation can be written explicitly as:
-
-\[
+```math
 V^*(s) = \max_{a} \sum_{s'} P(s'|s, a) \left[ R(s, a) + \gamma V^*(s') \right]
-\]
-
+```
 ### 5. **The Action-Value Function (Q-function)**
 
-An alternative form of the Bellman equation involves the **action-value function**, \( Q^*(s, a) \), which represents the value of taking action \( a \) in state \( s \) and then following the optimal policy from the resulting state:
-
-\[
+An alternative form of the Bellman equation involves the **action-value function**, $`Q^*(s, a)`$, which represents the value of taking action \( a \) in state \( s \) and then following the optimal policy from the resulting state:
+```math
 Q^*(s, a) = \mathbb{E} \left[ R(s, a) + \gamma V^*(s') \mid s, a \right]
-\]
-
+```
 Using this, the Bellman optimality equation for the value function becomes:
-
-\[
+```math
 V^*(s) = \max_a Q^*(s, a)
-\]
-
+```
 And for the action-value function:
-
-\[
+```math
 Q^*(s, a) = \sum_{s'} P(s'|s, a) \left[ R(s, a) + \gamma \max_{a'} Q^*(s', a') \right]
-\]
-
+```
 ### 6. **Summary of the Bellman Equations**
 
 - **Bellman equation for the value function**:
-
-\[
+```math
 V^*(s) = \max_{a} \sum_{s'} P(s'|s, a) \left[ R(s, a) + \gamma V^*(s') \right]
-\]
-
+```
 - **Bellman equation for the action-value function**:
-
-\[
+```math
 Q^*(s, a) = \sum_{s'} P(s'|s, a) \left[ R(s, a) + \gamma \max_{a'} Q^*(s', a') \right]
-\]
-
+```
 These equations describe how the value of a state or state-action pair can be decomposed into immediate rewards and the future value of subsequent states, and they form the foundation for many algorithms in dynamic programming and reinforcement learning, such as **Value Iteration** and **Q-Learning**.
 
 ### 7. **Key Principles Underpinning the Bellman Equation**
@@ -162,7 +146,7 @@ In the Bellman equation, the **transition probabilities** \( P(s'|s, a) \) repre
 Without knowing these transition probabilities, traditional RL struggles to generate reliable policies. Even with data, estimating these probabilities can be an extremely noisy and uncertain process, which undermines the reliability of solutions based on the Bellman equation.
 
 #### Beyond the Bellman Equation
-While the Bellman equation is foundational in RL, it makes several assumptions that break down in real-world, complex environments. States are difficult to identify, rewards are often implicit, discount factors fail to capture long-term dependencies, actions are not well-defined, and transition probabilities are rarely known. To build truly adaptive systems, we need to **move beyond the Bellman equation**, considering frameworks inspired by **natural selection**, **evolutionary processes**, and **deep learning architectures** that allow for **self-directed learning** and **real-time adaptation**. These methods provide greater flexibility for tackling dynamic, unpredictable environments and open the door to more robust forms of decision-making and optimization.
+While the Bellman equation is foundational in RL, it makes several assumptions that break down in real-world, complex environments. States are difficult to identify, rewards are often implicit, discount factors fail to capture long-term dependencies, actions are not well-defined, and transition probabilities are rarely known. To build truly adaptive systems, we need to **move beyond the Bellman equation**, a natural next step has been deep RL using neural networks.
 
 ---
 
@@ -468,53 +452,53 @@ To optimize this process, we need a **unified loss function** that takes into ac
 2. The accuracy of the final constrained output.
 3. The progressive learning from tasks at the edge of the model’s abilities.
 
-##### (i) **Reasoning Chain Loss (`\mathcal{L}_{\text{reason}}`)**
+##### (i) **Reasoning Chain Loss ($`\mathcal{L}_{\text{reason}}`$)**
 This component of the loss encourages the model to generate reasoning chains that match the ground truth and take fewer steps.
 
-\[
+```math
 \mathcal{L}_{\text{reason}} = - \sum_{i=1}^{n} \mathbb{I}(r_i = \text{ground truth step}) \cdot f_{\text{eff}}(r_i)
-\]
-- \( r_i \) represents each reasoning step in the chain.
-- \( f_{\text{eff}}(r_i) \) penalizes unnecessary steps, encouraging the model to find more efficient paths to the solution.
-- The indicator function \( \mathbb{I}(r_i = \text{ground truth step}) \) is 1 if the reasoning step matches the ground truth and 0 otherwise.
+```
+- $`r_i`$ represents each reasoning step in the chain.
+- $`f_{\text{eff}}(r_i)`$ penalizes unnecessary steps, encouraging the model to find more efficient paths to the solution.
+- The indicator function $`\mathbb{I}(r_i = \text{ground truth step})`$ is 1 if the reasoning step matches the ground truth and 0 otherwise.
 
-##### (ii) **Constrained Output Loss (`\mathcal{L}_{\text{constrained}}`)**
+##### (ii) **Constrained Output Loss ($`\mathcal{L}_{\text{constrained}}`$)**
 This term ensures that the final output generated between `<begin_constrained_output>` and `<end_constrained_output>` matches the correct ground truth answer.
 
-\[
+```math
 \mathcal{L}_{\text{constrained}} = - \mathbb{I}(o = \text{ground truth output})
-\]
-- \( o \) represents the model’s final constrained output.
+```
+- $`o`$ represents the model’s final constrained output.
 
 This term forces the model to produce an output that aligns with the known ground truth for the task.
 
-##### (iii) **General Response Loss (`\mathcal{L}_{\text{response}}`)**
+##### (iii) **General Response Loss ($`\mathcal{L}_{\text{response}}`$)**
 The general response loss encourages the model to generate a coherent and user-friendly explanation of the solution, guided by traditional supervised fine-tuning and DPO principles.
 
-\[
+```math
 \mathcal{L}_{\text{response}} = \text{Supervised loss (cross-entropy)} + \text{DPO bias}
-\]
+```
 This term helps the model provide clear explanations in a natural language format, which is important for human-AI interaction.
 
-##### (iv) **Difficulty Matching Loss (`\mathcal{L}_{\text{diff}}`)**
+##### (iv) **Difficulty Matching Loss ($`\mathcal{L}_{\text{diff}}`$)**
 This term ensures that the tasks presented to the model are appropriately challenging, pushing the model just beyond its current capabilities while avoiding overwhelming difficulty.
 
-\[
+```math
 \mathcal{L}_{\text{diff}} = \left| D_{\text{model}} - D_{\text{task}} \right|
-\]
-- \( D_{\text{model}} \): The model’s current difficulty level, derived from recent task performance.
-- \( D_{\text{task}} \): The difficulty score of the task.
+```
+- $`D_{\text{model}}`$: The model’s current difficulty level, derived from recent task performance.
+- $`D_{\text{task}}`$: The difficulty score of the task.
 
 This term minimizes the gap between the model’s capabilities and the complexity of the tasks it is given.
 
-##### (v) **Final Loss Function (`\mathcal{L}_{\text{total}}`)**
+##### (v) **Final Loss Function ($`\mathcal{L}_{\text{total}}`$)**
 
 By combining all components, the unified loss function ensures that the model generates correct and efficient reasoning chains, matches ground truth outputs, generates clear responses, and continuously learns from tasks at the appropriate difficulty level:
 
-\[
+```math
 \mathcal{L}_{\text{total}} = \alpha \cdot \mathcal{L}_{\text{reason}} + \beta \cdot \mathcal{L}_{\text{constrained}} + \gamma \cdot \mathcal{L}_{\text{response}} + \delta \cdot \mathcal{L}_{\text{diff}}
-\]
-- \( \alpha \), \( \beta \), \( \gamma \), and \( \delta \) are hyperparameters controlling the weight of each loss term.
+```
+- $`\alpha`$, $`\beta`$, $`\gamma`$, and $`\delta`$ are hyperparameters controlling the weight of each loss term.
 
 #### 5. **Learning Flow**
 1. **Task Presentation**: The model is presented with a task and generates reasoning chains using `<cot>` tokens.
