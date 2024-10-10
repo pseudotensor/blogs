@@ -218,6 +218,66 @@ By integrating neural networks into these components of RL—state representatio
 
 ---
 
+## Issues with Using Reinforcement Learning: Undefined States, Actions, and Rewards
+
+As we explored earlier, the **Bellman equation** and traditional reinforcement learning (RL) frameworks rely on well-defined states, actions, rewards, and transitions. These assumptions are convenient for simplifying the learning process, but in real-world applications, they often fail. When attempting to apply RL to complex systems, we face the same issues seen with the Bellman equation: **none of the core components**—states, actions, or rewards—are clearly defined, making it difficult for an agent to learn effectively. In this section, we dive deeper into these issues and why using RL in real-world applications can be problematic without addressing these fundamental ambiguities.
+
+#### 1. **Undefined States**
+In RL, a **state** \( S \) is assumed to contain all the relevant information about the current situation in an environment. The RL agent bases its decisions on this state, assuming that it perfectly captures the environment's status. However, in most real-world systems, the state is not well-defined and is often hard to model. Some key challenges include:
+
+- **Complexity and dimensionality**: In systems like autonomous driving, financial markets, or healthcare, the “state” might involve complex, high-dimensional sensor inputs, historical data, environmental factors, and even external variables that can’t easily be observed or quantified. For instance, in healthcare, the “state” of a patient might involve subtle physiological signals, medical history, environmental exposure, and socio-economic conditions. How can one encapsulate such a vast amount of data in a singular state representation?
+
+- **Non-Markovian nature of states**: The assumption of the **Markov property**, which states that the future depends only on the present state, breaks down in real-world applications. Often, the future depends on **past states or events** that are not captured in the immediate state. For instance, in long-term decision-making problems like investment management, the current state doesn’t fully represent all the relevant information needed to make optimal decisions because it might depend on trends, past behaviors, or latent variables that aren’t observed directly.
+
+- **State identification as an optimization problem**: Instead of assuming a well-defined state, **identifying the correct state representation** becomes an optimization problem in itself. RL agents often rely on manually engineered features or data preprocessing techniques to create a useful state, but this is challenging, domain-specific, and prone to error.
+
+#### 2. **Ill-Defined Actions**
+In standard RL, the agent is given a set of possible **actions** \( A \) that it can take in any given state. These actions are usually discrete or continuous variables, and the agent’s goal is to choose the best action in each state to maximize future rewards. However, in real-world applications, the notion of what constitutes an action can be unclear:
+
+- **Ambiguity in actions**: In many environments, the **available actions** are not easily discernible. Consider human social interactions—actions could include subtle gestures, facial expressions, or changes in tone of voice. Identifying which actions are relevant and important is non-trivial, especially when the effects of certain actions are ambiguous or delayed.
+
+- **Continuous and hierarchical actions**: In tasks like robotics, actions are often **continuous** rather than discrete (e.g., controlling the torque of a motor or adjusting the angle of a robotic arm). Additionally, actions can be **hierarchical**—low-level motor actions combine to form higher-level actions like walking or grasping. RL models typically require the action space to be predefined, but this doesn’t capture the complexity of real-world systems where actions could be learned or abstracted at multiple levels of granularity.
+
+- **Action discovery problem**: In many real-world systems, **new actions** emerge as the agent learns. Actions may not be fully observable at the outset, meaning the RL agent has to **discover latent actions** or construct abstract strategies over time. Predefining a finite action set from the start can limit the agent’s ability to learn complex behaviors or adapt to dynamic environments.
+
+#### 3. **Reward Function Design**
+In RL, the **reward function** is the agent’s guiding metric—it receives rewards based on how well it performs a task, and its objective is to maximize cumulative rewards. However, in real-world systems, rewards are often ill-defined or even unavailable. Some challenges include:
+
+- **Ambiguous or internal rewards**: Unlike games or toy simulations, where rewards are explicitly defined (e.g., gaining points or winning), real-world environments often involve **internal or implicit rewards**. For example, in healthcare, a reward might represent the improvement of a patient’s well-being, which is difficult to quantify. In creative tasks, rewards may relate to satisfaction, aesthetics, or innovation—factors that are highly subjective and cannot be directly measured.
+
+- **Sparse or delayed rewards**: In real-world tasks like scientific discovery or long-term business planning, rewards might only be realized **after a long period** of time. This delay between action and reward makes it difficult for the agent to learn because it cannot immediately associate its actions with the outcomes.
+
+- **Reward hacking**: In some cases, defining a reward function leads to **undesirable behavior** where the agent learns to exploit the reward system rather than solving the intended problem. For example, a robot designed to clean a room might learn to push dust under a carpet to receive the cleaning reward without actually improving cleanliness.
+
+- **Reward definition as an optimization**: Designing the reward function is often a manual process, requiring significant domain knowledge. In many applications, **defining the reward function** becomes an optimization problem, where designers must iteratively refine it based on observed behavior. This trial-and-error approach can lead to unstable or brittle agents, as small changes to the reward function might cause large changes in behavior.
+
+#### 4. **Transition Probabilities and Dynamics**
+In standard RL, the transition probabilities \( P(s'|s, a) \) define how the environment transitions from one state to another after an action is taken. These probabilities are critical for value function estimation and policy optimization. However, in real-world environments, transitions are rarely known or easy to model:
+
+- **Unknown or complex dynamics**: Many real-world systems involve **complex, unknown dynamics** that are difficult to model or estimate. For instance, in natural ecosystems or biological systems, the interactions between different entities (e.g., species, cells) create highly complex, non-linear dynamics. Estimating transition probabilities in such environments is a massive challenge, often requiring substantial empirical data or sophisticated modeling techniques that are prone to errors.
+
+- **Stochastic environments**: In many real-world scenarios, transitions are **stochastic**—small changes in actions can lead to dramatically different outcomes. Consider stock market investments, where seemingly minor decisions (e.g., trading at a specific time) can cause significant downstream effects. In these environments, transition probabilities are highly variable, making it difficult for an RL agent to form reliable policies based on prior experiences.
+
+- **Inability to generalize**: Even with extensive data, learned transition probabilities in one environment might not generalize to others. For example, in autonomous driving, an RL agent trained on transition dynamics in a specific city may struggle when deployed in another location due to different road conditions, traffic patterns, or cultural norms.
+
+#### 5. **Challenges in Value Function Estimation**
+In RL, agents rely on value functions (such as **Q-values**) to estimate the expected cumulative rewards from a given state or state-action pair. However, this requires accurate knowledge of states, actions, rewards, and transitions—none of which are well-defined in real-world applications.
+
+- **Approximation errors**: Even if an agent can estimate value functions, these approximations often break down in real-world environments due to the complexity and uncertainty of transitions and rewards. The value function relies on knowing how the environment will behave over time, which is often not possible in dynamic or unpredictable systems.
+
+- **Difficulty in long-term reasoning**: Value functions typically assume a well-behaved, recursive structure where future rewards can be discounted appropriately. In chaotic or sensitive systems, however, small changes in action or state can have far-reaching consequences, making it hard to predict the long-term effects of an action. As a result, RL agents can struggle to perform long-term reasoning, especially when rewards are sparse or delayed.
+
+#### 6. **RL and the Bellman Equation Assumptions**
+All of these issues—undefined states, ill-defined actions, ambiguous rewards, and uncertain transitions—point to the fact that **standard RL and the Bellman equation** make unrealistic assumptions about how an agent interacts with the environment. In reality:
+- **States are not perfect representations**.
+- **Actions are not always predefined** and can evolve over time.
+- **Rewards are not simple, immediate, or well-defined** in many domains.
+- **Transition probabilities** are often complex or unknown.
+
+When the core assumptions of the Bellman equation break down, it becomes clear that RL as traditionally formulated cannot provide a robust solution in real-world scenarios without major modifications or adaptive mechanisms.
+
+---
+
 ## Beyond RL
 
 While neural networks offer the potential to model components of RL more flexibly, the fundamental assumptions behind RL still limit its applicability in real-world, dynamic environments. To address these limitations, alternative approaches, such as **Neural Architecture Search (NAS)** and **evolutionary algorithms**, can help push the boundaries beyond traditional RL.
